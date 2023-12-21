@@ -3,11 +3,11 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  givenName: {
     type: String,
     required: [true, "First Name is required"],
   },
-  lastName: {
+  familyName: {
     type: String,
     required: [true, "Last Name is required"],
   },
@@ -24,20 +24,8 @@ const userSchema = new mongoose.Schema({
       message: (props) => `Email (${props.value}) is invalid`,
     },
   },
-  password: {
-    type: String,
-  },
-  passwordConfirm: {
-    type: String,
-  },
-  passwordChangedAt: {
-    type: Date,
-  },
-  passwordResetToken: {
-    type: String,
-  },
-  passwordResetExpires: {
-    type: Date,
+  googleId: {
+    type: String
   },
   createdAt: {
     type: Date,
@@ -46,29 +34,6 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
   },
-  verified: {
-    type: Boolean,
-    default: false,
-  },
-  otp: {
-    type: String,
-  },
-  otp_expiry_time: {
-    type: Date,
-  },
-  socket_id: {
-    type: String,
-  },
-  friends: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-  status: {
-    type: String,
-    enum: ["Online", "Offline"]
-  }
 });
 
 userSchema.pre("save", async function (next) {
