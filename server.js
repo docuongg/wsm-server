@@ -6,8 +6,6 @@ dotenv.config({
 
 const path = require("path");
 
-const { Server } = require("socket.io");
-
 const mongoose = require("mongoose");
 
 process.on("uncaughtException", (err) => {
@@ -19,7 +17,7 @@ const http = require("http");
 
 const server = http.createServer(app);
 
-const DB = process.env.DBURI.replace("<PASSWORD>", process.env.DBPASSWORD);
+const DB = process.env.DBURI.replace("<PASSWORD>", process.env.DBPASSWORD).replace("<DBNAME>", process.env.DBNAME);
 
 mongoose
   .connect(DB)
@@ -41,4 +39,12 @@ process.on("unhandledRejection", (err) => {
   server.close(() => {
     process.exit(1);
   });
+});
+
+app.get("/", (req,res)=>{
+  res.send('<a href="/auth/login/google">Authenticate with google </a>')
+});
+
+app.use((req, res, next) => {
+  res.status(404).send('Page not found');
 });
