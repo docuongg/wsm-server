@@ -1,6 +1,6 @@
 const express = require("express"); // web famework
 
-// const routes = require("./routes/index");
+const routes = require("./routes/index");
 
 const morgan = require("morgan"); // HTTP request logger middleware for node.js
 
@@ -11,6 +11,8 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 
 const bodyParser = require("body-parser");
+
+const passport = require("passport");
 
 const xss = require("xss");
 
@@ -23,6 +25,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(passport.initialize());
 
 app.use(mongoSanitize());
 
@@ -42,9 +46,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(helmet());
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+  app.use(morgan("combined"));
+// }
 
 const limiter = rateLimit({
   max: 3000,
@@ -54,6 +58,6 @@ const limiter = rateLimit({
 
 app.use("/tawk", limiter);
 
-// app.use(routes);
+app.use(routes);
 
 module.exports = app;
