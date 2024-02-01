@@ -8,8 +8,12 @@ const status = new Enum({'pending': 1, 'confirmed': 2, 'approved': 3, 'decline':
 
 const requestSchema = new mongoose.Schema({
   kind: {
-    type: Number,
-    enum: Object.values(kind.enums),
+    type: String,
+    enum: ['takeLeave', 'deviceRecall']
+  },
+  compensate: {
+    type: Boolean,
+    default: false
   },
   startAt: {
     type: Date
@@ -18,8 +22,8 @@ const requestSchema = new mongoose.Schema({
     type: Date
   },
   status: {
-    type: Number,
-    enum: Object.values(status.enums),
+    type: String,
+    enum: ['pending', 'confirmed', 'approved', 'decline', 'canceled']
   },
   content: {
     type: String
@@ -30,6 +34,10 @@ const requestSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: Date,
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
   },
 })
 

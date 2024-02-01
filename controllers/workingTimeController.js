@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const WorkingTime = require('../models/workingTime')
+const WorkingTime = require('../models/workingTime');
 
 exports.index = async (req, res, next) => {
   const userId = req.user._id
