@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 const Enum = require('enum')
 
-const division = new Enum({'d1': 1, 'd2': 2, 'd3': 3, 'sg': 4})
-const gender = new Enum({'male': 1, 'female': 2})
-
 const profileSchema = new mongoose.Schema({
+  givenName: {
+    type: String,
+    required: [true, "First Name is required"],
+  },
+  familyName: {
+    type: String,
+    required: [true, "Last Name is required"],
+  },
+  avatar: {
+    type: String,
+  },
   phone: {
     type: String
   },
