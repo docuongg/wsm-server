@@ -6,7 +6,8 @@ dotenv.config({
 const { promisify } = require("util");
 
 const User = require("../models/user");
-const filterObj = require("../utils/filterObj")
+const filterObj = require("../utils/filterObj");
+const Profile = require("../models/profile");
 
 const signToken = (user) => {
   return jwt.sign(
@@ -28,16 +29,20 @@ exports.loginGoogle = async (req, res, next) => {
   );
 
   const existing_user = await User.findOne({ email: ggUser.email });
-  const new_user = null;
+  let new_user = null;
 
   if (!existing_user) {
     new_user = await User.create({
       email: ggUser.email,
+      googleId: ggUser.sub,
+    });
+
+    await Profile.create({
+      user: new_user,
       givenName: ggUser.given_name,
       familyName: ggUser.family_name,
-      googleId: ggUser.sub,
       avatar: ggUser.picture,
-    });
+    })
   }
 
   const token = signToken(existing_user || new_user);
